@@ -9,6 +9,8 @@ import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 /**
  *
  * @author Yuheng
@@ -190,5 +192,55 @@ public class LoginSystem {
         return encrypedPassword;
     }
     
+    /**
+     * Performs a binary search on an array of strings to find the specified term.
+     * @param term    The string term to search for in the list
+     * @param list    The array of strings in which the term is to be searched
+     * @return        The index of the term if it is found in the list; otherwise, -1
+     */
+    public int binarySearch(String term, String[] list) {
+        int low = 0;
+        int high = list.length - 1;
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            int res = term.compareTo(list[mid]);
+            // Check if the term is present at mid
+            if (res == 0)
+                return mid;
+            // If term is greater, ignore left half
+            else if (res > 0)
+                low = mid + 1;
+            // If term is smaller, ignore right half
+            else
+                high = mid - 1;
+        }
+        return -1;
+    }
     
+    /**
+     * Performs a sequential search on an array of strings to find the specified term
+     * @param term    The string term to search for in the list
+     * @param list    The array of strings in which the term is to be searched
+     * @return        The index of the term if it is found in the list
+     */
+    public int seqSearch(String term, String[] list) {
+        // Loop through each term in the list
+        for (int i = 0; i < list.length; i++) {
+            if (list[i].equals(term)) {
+                return i;
+            }
+        }
+        return -1; 
+    }
+    
+    /**
+     * Loads a list of code names from a file into an array of strings
+     * @param filename  The file containing the list of code names
+     * @return          An array of strings where each element is a line from the file
+     * @throws IOException
+     */
+    public String[] loadCodeNames(String filename) throws IOException {
+        List<String> lines = Files.readAllLines(Paths.get(filename));
+        return lines.toArray(new String[0]);
+    }
 }

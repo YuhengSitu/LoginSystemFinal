@@ -5,6 +5,7 @@
 package loginsystem;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
 /**
@@ -20,8 +21,8 @@ public class loginMain {
      * @throws NoSuchAlgorithmException
      */
     public static void main(String[] args) throws FileNotFoundException, NoSuchAlgorithmException {
+        LoginSystem login = new LoginSystem();
         try {
-            LoginSystem login = new LoginSystem();
             login.loadUsers();
             
             User user1 = new User("Bruce", "123123Ss", "bruceshi@gmail.com", "1234567890",81);
@@ -39,6 +40,20 @@ public class loginMain {
             System.err.println("An error occurred: " + e.getMessage());
         }
         
-      
+        try {
+            String[] codeNames = login.loadCodeNames("dictionary.txt");
+            String searchTerm = "able"; // Example search term
+
+            // Perform binary search
+            int binaryResult = login.binarySearch(searchTerm, codeNames);
+            System.out.println("Binary Search Result: " + (binaryResult != -1 ? "Found at index " + binaryResult : "Not Found"));
+
+            // Perform sequential search
+            int seqResult = login.seqSearch(searchTerm, codeNames);
+            System.out.println("Sequential Search Result: " + (seqResult != -1 ? "Found at index " + seqResult : "Not Found"));
+
+        } catch (IOException e) {
+            System.out.println("Error reading the file: " + e.getMessage());
+        }
     }
 }
